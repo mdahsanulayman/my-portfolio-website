@@ -2,15 +2,15 @@
 
 import { motion } from "framer-motion";
 import { CheckCircle2, Loader2, Mail, MapPin, Phone, Send, TriangleAlert } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { personal, socials } from "@/data/personal";
 import { services } from "@/data/services";
-import { getProvider, sendMessage } from "@/lib/sendMessage";
+import { sendMessage } from "@/lib/sendMessage";
 import { validateContact, type ContactErrors, type ContactValues } from "@/lib/validators";
 import Reveal from "./ui/Reveal";
 import SectionHeading from "./ui/SectionHeading";
 
-type Status = "idle" | "sending" | "success" | "error" | "unconfigured";
+type Status = "idle" | "sending" | "success" | "error";
 const empty: ContactValues = { name: "", email: "", subject: "", message: "", service: "" };
 
 const fieldClass =
@@ -21,6 +21,7 @@ export default function Contact() {
   const [errors, setErrors] = useState<ContactErrors>({});
   const [status, setStatus] = useState<Status>("idle");
   const [honeypot, setHoneypot] = useState("");
+  const submitting = useRef(false);
 
   useEffect(() => {
     const selectOrderedService = (event: Event) => {
@@ -45,22 +46,22 @@ export default function Contact() {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (honeypot) return; // bots fill hidden fields
+    if (submitting.current || honeypot) return;
     const found = validateContact(values);
     setErrors(found);
     if (Object.keys(found).length) return;
 
-    if (getProvider() === "none") {
-      setStatus("unconfigured");
-      return;
-    }
+    submitting.current = true;
     setStatus("sending");
     try {
-      await sendMessage(values);
+      await sendMessage(values, honeypot);
       setStatus("success");
       setValues(empty);
+      setHoneypot("");
     } catch {
       setStatus("error");
+    } finally {
+      submitting.current = false;
     }
   };
 
@@ -147,15 +148,6 @@ export default function Contact() {
               )}
               {status === "error" && (
                 <p className="flex items-center gap-2 text-sm text-red-500"><TriangleAlert size={18} aria-hidden="true" /> Something went wrong. Please try again or email me directly.</p>
-              )}
-              {status === "unconfigured" && (
-                <p className="flex items-start gap-2 text-sm text-amber-500">
-                  <TriangleAlert size={18} className="mt-0.5 shrink-0" aria-hidden="true" />
-                  <span>
-                    The contact form is not connected to an email service yet, so nothing was sent. Please email me at{" "}
-                    <a className="underline" href={`mailto:${personal.email}`}>{personal.email}</a>.
-                  </span>
-                </p>
               )}
             </div>
           </form>

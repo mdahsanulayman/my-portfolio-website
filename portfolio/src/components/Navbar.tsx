@@ -83,7 +83,7 @@ export default function Navbar() {
           <ThemeToggle />
           <motion.a
             href={personal.cvPath}
-            download
+            download="CV of Md Ahsanul Alam.pdf"
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.96 }}
             className="btn-primary hidden !px-4 !py-2.5 sm:inline-flex"
@@ -129,7 +129,7 @@ export default function Navbar() {
                 </motion.li>
               ))}
             </ul>
-            <a href={personal.cvPath} download className="btn-primary mt-3 w-full">
+            <a href={personal.cvPath} download="CV of Md Ahsanul Alam.pdf" className="btn-primary mt-3 w-full">
               <Download size={16} aria-hidden="true" /> Download CV
             </a>
           </motion.div>

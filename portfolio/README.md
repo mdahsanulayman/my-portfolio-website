@@ -1,4 +1,4 @@
-# MD Ahsanul Alam - Portfolio
+﻿# MD Ahsanul Alam - Portfolio
 
 A modern, responsive developer portfolio built with **Next.js 14 (App Router)**, **React**, **TypeScript**, **Tailwind CSS**, **Framer Motion** and **Lucide React**. Light and dark themes (saved in `localStorage`), scroll animations, a working contact form, SEO metadata, and a data-driven structure so you can edit content without touching components.
 
@@ -46,17 +46,19 @@ Copy a block in `src/data/projects.ts`, set a unique `id`, fill in `title`, `des
 ### Skill progress bars
 No percentages are shown by default (none were provided). If you want a bar for a skill, add `level` (0-100) to that skill only.
 
-## 3. Make the contact form work
+## 3. Configure the contact form with Supabase
 
-The form validates input but **will not claim a message was sent unless a service is configured**. Choose one:
+1. Create a Supabase project.
+2. In SQL Editor, run the contents of supabase/contact_messages.sql. This creates the private contact_messages table and its rate-limited submission function.
+3. Copy your project URL and a Secret API key from Project Settings > API Keys.
+4. Add these server-only variables to .env.local for local development:
 
-1. Copy `.env.example` to `.env.local`.
-2. **Formspree (easiest):** create a form at https://formspree.io, then set `NEXT_PUBLIC_FORMSPREE_ID` to the form ID (the part after `/f/`).
-3. **EmailJS:** at https://www.emailjs.com create a service and template, then set `NEXT_PUBLIC_EMAILJS_SERVICE_ID`, `NEXT_PUBLIC_EMAILJS_TEMPLATE_ID`, `NEXT_PUBLIC_EMAILJS_PUBLIC_KEY`. Use `{{from_name}}`, `{{from_email}}`, `{{subject}}`, `{{message}}` in the template.
-4. Restart `npm run dev`.
+    SUPABASE_URL=https://your-project-ref.supabase.co
+    SUPABASE_SECRET_KEY=sb_secret_...
 
-Until configured, visitors see a notice with your email address instead.
+5. In Vercel, open Project > Settings > Environment Variables and add SUPABASE_URL and SUPABASE_SECRET_KEY for the environments you use. Redeploy after saving them.
 
+The secret key must stay server-side. Do not prefix it with NEXT_PUBLIC_, put it in browser code, or commit .env.local. The API validates submissions, checks the existing honeypot, limits each IP to five submissions per 15 minutes, and returns success only after Supabase confirms the database function completed.
 ## 4. Deploy on Vercel
 
 1. Push the project to a GitHub repository (`.env.local` is git-ignored).
@@ -68,18 +70,18 @@ Until configured, visitors see a notice with your email address instead.
 
 ```
 portfolio/
-├── public/
-│   ├── images/{profile,projects,background}/
-│   ├── icons/
-│   └── files/my-cv.pdf          <- placeholder, replace it
-├── src/
-│   ├── app/        layout.tsx, page.tsx, globals.css, icon.svg, robots.ts, sitemap.ts
-│   ├── components/ Navbar, Hero, About, Services, Skills, Education, Projects, Contact, Footer
-│   │   └── ui/     Reveal, SectionHeading, ThemeToggle, Background, SafeImage, MotionProvider
-│   ├── data/       personal, skills, education, projects, services
-│   ├── hooks/      useTheme, useActiveSection
-│   └── lib/        utils, validators, sendMessage
-├── .env.example  package.json  tsconfig.json  tailwind.config.ts  next.config.mjs  postcss.config.mjs
+â”œâ”€â”€ public/
+â”‚   â”œâ”€â”€ images/{profile,projects,background}/
+â”‚   â”œâ”€â”€ icons/
+â”‚   â””â”€â”€ files/my-cv.pdf          <- placeholder, replace it
+â”œâ”€â”€ src/
+â”‚   â”œâ”€â”€ app/        layout.tsx, page.tsx, globals.css, icon.svg, robots.ts, sitemap.ts
+â”‚   â”œâ”€â”€ components/ Navbar, Hero, About, Services, Skills, Education, Projects, Contact, Footer
+â”‚   â”‚   â””â”€â”€ ui/     Reveal, SectionHeading, ThemeToggle, Background, SafeImage, MotionProvider
+â”‚   â”œâ”€â”€ data/       personal, skills, education, projects, services
+â”‚   â”œâ”€â”€ hooks/      useTheme, useActiveSection
+â”‚   â””â”€â”€ lib/        utils, validators, sendMessage
+â”œâ”€â”€ .env.example  package.json  tsconfig.json  tailwind.config.ts  next.config.mjs  postcss.config.mjs
 ```
 
 ## Notes

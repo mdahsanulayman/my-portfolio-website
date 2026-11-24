@@ -33,6 +33,19 @@ export default function Footer() {
             ))}
           </ul>
           <a href={`mailto:${personal.email}`} className="mt-4 inline-block text-sm text-muted hover:text-accent">{personal.email}</a>
+          <div className="mt-5">
+            <h3 className="mb-2 text-sm font-semibold">Find Me Here</h3>
+            <div className="glass overflow-hidden rounded-2xl p-1.5">
+              <iframe
+                title="Google Maps location in Cumilla, Bangladesh"
+                src="https://www.google.com/maps?q=23.4419689,91.1734314&z=15&output=embed"
+                className="h-32 w-full rounded-xl border-0"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
+            </div>
+          </div>
         </div>
       </div>
       <div className="border-t border-border/60 py-5 text-center text-xs text-muted">
