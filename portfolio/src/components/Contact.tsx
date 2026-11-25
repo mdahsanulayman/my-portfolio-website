@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { motion } from "framer-motion";
 import { CheckCircle2, Loader2, Mail, MapPin, Phone, Send, TriangleAlert } from "lucide-react";
@@ -68,7 +68,7 @@ export default function Contact() {
   const info = [
     { icon: Mail, label: "Email", value: personal.email, href: `mailto:${personal.email}` },
     { icon: Phone, label: "Phone", value: personal.phone, href: `tel:${personal.phoneLink}` },
-    { icon: MapPin, label: "Location", value: personal.location },
+    { icon: MapPin, label: "Location", value: personal.location, href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(personal.location)}`, external: true },
   ];
 
   return (
@@ -76,7 +76,7 @@ export default function Contact() {
       <SectionHeading id="contact-title" title="Contact" subtitle="Have a question or want to work together? Send me a message." />
       <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
         <Reveal className="space-y-4">
-          {info.map(({ icon: Icon, label, value, href }) => {
+          {info.map(({ icon: Icon, label, value, href, external }) => {
             const body = (
               <>
                 <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-accent/15 text-accent">
@@ -89,7 +89,7 @@ export default function Contact() {
               </>
             );
             return href ? (
-              <a key={label} href={href} className="glass flex items-center gap-4 rounded-2xl p-4 transition-transform hover:-translate-y-1">{body}</a>
+              <a key={label} href={href} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined} className={`glass flex items-center gap-4 rounded-2xl p-4 ${external ? "transition-colors hover:text-accent" : "transition-transform hover:-translate-y-1"}`}>{body}</a>
             ) : (
               <div key={label} className="glass flex items-center gap-4 rounded-2xl p-4">{body}</div>
             );
@@ -130,7 +130,7 @@ export default function Contact() {
             </div>
             <div>
               <label htmlFor="message" className="mb-1.5 block text-sm font-medium">Message</label>
-              <textarea id="message" name="message" rows={5} value={values.message} onChange={onChange} placeholder="Write your message here..." aria-invalid={!!errors.message} aria-describedby={errors.message ? "message-error" : undefined} className={`${fieldClass} resize-y`} />
+              <textarea id="message" name="message" rows={5} value={values.message} onChange={onChange} placeholder="Write your message here..." aria-invalid={!!errors.message} aria-describedby={errors.message ? "message-error" : undefined} className={`${fieldClass} resize-none`} />
               {errors.message && <p id="message-error" role="alert" className="mt-1.5 text-xs text-red-500">{errors.message}</p>}
             </div>
 

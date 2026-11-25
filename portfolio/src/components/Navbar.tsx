@@ -8,6 +8,7 @@ import { navLinks, personal } from "@/data/personal";
 import { useActiveSection } from "@/hooks/useActiveSection";
 import { cn } from "@/lib/utils";
 import ThemeToggle from "./ui/ThemeToggle";
+import BrandLogo from "./ui/BrandLogo";
 
 const ids = navLinks.map((l) => l.id);
 
@@ -51,8 +52,7 @@ export default function Navbar() {
           transition={{ type: "spring", stiffness: 400, damping: 24 }}
           className="group flex items-center gap-2 font-display text-lg font-extrabold tracking-[0.16em] text-fg transition-colors duration-300 hover:text-accent sm:text-xl"
         >
-          <span className="text-gradient">AYMAN</span>
-          <span aria-hidden="true" className="h-2 w-2 rotate-45 rounded-[2px] bg-accent shadow-sm shadow-accent/40 transition-transform duration-300 group-hover:rotate-[135deg] group-hover:scale-110" />
+          <BrandLogo />
         </motion.a>
 
         <ul className="hidden items-center gap-1 lg:flex">

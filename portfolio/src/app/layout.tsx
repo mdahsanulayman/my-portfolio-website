@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans, Sora } from "next/font/google";
 import { personal } from "@/data/personal";
 import "./globals.css";
+import ScrollUtilities from "@/components/ui/ScrollUtilities";
 
 /* FONTS: swap these two for any Google fonts you like. */
 const display = Sora({ subsets: ["latin"], variable: "--font-display", display: "swap" });
@@ -48,6 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
         {children}
+        <ScrollUtilities />
       </body>
     </html>
   );

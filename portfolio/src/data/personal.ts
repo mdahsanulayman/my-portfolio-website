@@ -1,4 +1,4 @@
-﻿import { Facebook, Github, Linkedin, type LucideIcon } from "lucide-react";
+import { Facebook, Github, Instagram, type LucideIcon } from "lucide-react";
 
 /**
  * ============================================================
@@ -53,9 +53,9 @@ export interface SocialLink {
  * Delete an entry to remove it everywhere (hero, contact, footer).
  */
 export const socials: SocialLink[] = [
-  { label: "GitHub", href: "https://github.com/", icon: Github },
-  { label: "LinkedIn", href: "https://www.linkedin.com/", icon: Linkedin },
-  { label: "Facebook", href: "https://www.facebook.com/", icon: Facebook },
+  { label: "GitHub", href: "https://github.com/mdahsanulayman", icon: Github },
+  { label: "Instagram", href: "https://www.instagram.com/md.ayman0.0?dmpr=MWlxM2Z4azlwZGp6Zw==", icon: Instagram },
+  { label: "Facebook", href: "https://www.facebook.com/md.ayman0.0", icon: Facebook },
 ];
 
 /** Navbar + footer links. `id` must match the section id on the page. */

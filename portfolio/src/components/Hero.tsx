@@ -33,7 +33,7 @@ export default function Hero() {
             {personal.name}.
           </motion.h1>
 
-          <motion.div variants={item} className="mt-5 flex h-9 items-center overflow-hidden text-xl font-semibold sm:text-2xl" aria-live="polite">
+          <motion.div variants={item} className="mt-5 flex min-h-9 w-full items-center text-xl font-semibold leading-[1.4] sm:text-2xl sm:leading-[1.4] md:h-9 md:min-h-0 md:overflow-hidden md:leading-[2rem]" aria-live="polite">
             <AnimatePresence mode="wait">
               <motion.span
                 key={roleIndex}
