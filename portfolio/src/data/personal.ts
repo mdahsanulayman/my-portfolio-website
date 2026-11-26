@@ -31,10 +31,10 @@ export const personal = {
   phoneLink: "+8801302982948", // used for tap-to-call
   location: "Cumilla, Bangladesh",
 
-  // Replace these files to change your pictures / CV (keep the same names, or edit the paths)
+  // Update these paths when replacing the profile image or CV file.
   profileImage: "/images/profile/my-photo.jpg.jpeg",
   profileAlt: "Portrait of MD Ahsanul Alam",
-  cvPath: "/files/my-cv.pdf",
+  cvPath: "/files/CV_of_Md_Ahsanul_Alam.pdf",
 
   // Used for SEO. Set NEXT_PUBLIC_SITE_URL in .env.local / Vercel after deploying.
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",

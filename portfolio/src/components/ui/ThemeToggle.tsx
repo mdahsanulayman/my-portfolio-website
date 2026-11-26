@@ -13,10 +13,8 @@ export default function ThemeToggle() {
     <motion.button
       type="button"
       onClick={toggle}
-      whileTap={{ scale: 0.9 }}
-      whileHover={{ scale: 1.06 }}
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-      className="glass relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-full"
+      className="glass relative flex h-10 w-10 shrink-0 touch-manipulation items-center justify-center overflow-hidden rounded-full p-0"
     >
       <AnimatePresence mode="wait" initial={false}>
         {mounted && (

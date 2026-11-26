@@ -3,8 +3,8 @@
  *  EDIT YOUR PROJECTS HERE
  * ============================================================
  * Current project entries are listed below.
- * To add a real project: copy an entry, set isPlaceholder to false (or delete it),
- * fill in the details, and put its screenshot in public/images/projects/.
+ * To add a project, set a unique `id`, fill in its details, and add its screenshot
+ * under public/images/projects/.
  * Leave `github` or `live` empty ("") to hide that button.
  */
 export interface Project {
@@ -15,7 +15,6 @@ export interface Project {
   tech: string[];
   github: string;
   live: string;
-  isPlaceholder?: boolean;
 }
 
 export const projects: Project[] = [

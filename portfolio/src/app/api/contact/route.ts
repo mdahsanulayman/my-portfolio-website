@@ -1,6 +1,6 @@
-﻿import { createHmac } from "node:crypto";
 import { NextResponse } from "next/server";
 import { services } from "@/data/services";
+import { submitContactMessage } from "@/server/supabase/submitContactMessage";
 
 export const runtime = "nodejs";
 
@@ -68,48 +68,24 @@ export async function POST(request: Request) {
     return errorResponse("Please check the submitted fields.", 400);
   }
 
-  const supabaseUrl = process.env.SUPABASE_URL?.replace(/\/+$/, "");
-  const supabaseSecretKey = process.env.SUPABASE_SECRET_KEY;
-  if (!supabaseUrl || !supabaseSecretKey) {
-    return errorResponse("The contact form is not configured yet.", 503);
-  }
-
   const clientIp =
     request.headers.get("x-real-ip")?.trim() ||
     request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
     "unknown";
-  const rateLimitHash = createHmac("sha256", supabaseSecretKey).update(clientIp).digest("hex");
+  const result = await submitContactMessage({
+    name,
+    email,
+    selectedService: selectedService?.title ?? null,
+    subject,
+    message,
+  }, clientIp);
 
-  try {
-    const response = await fetch(supabaseUrl + "/rest/v1/rpc/submit_contact_message", {
-      method: "POST",
-      headers: {
-        apikey: supabaseSecretKey,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        p_name: name,
-        p_email: email,
-        p_selected_service: selectedService?.title ?? null,
-        p_subject: subject,
-        p_message: message,
-        p_rate_limit_hash: rateLimitHash,
-      }),
-      cache: "no-store",
-    });
-
-    if (!response.ok) {
-      const result = await response.json().catch(() => null) as { code?: string } | null;
-      if (result?.code === "P0001") {
-        return errorResponse("Too many messages. Please try again in 15 minutes.", 429);
-      }
-      console.error("Supabase contact submission failed with status", response.status);
-      return errorResponse("Unable to save your message right now.", 500);
-    }
-
-    return NextResponse.json({ ok: true }, { status: 201 });
-  } catch {
-    console.error("Supabase contact submission could not reach the database.");
-    return errorResponse("Unable to save your message right now.", 500);
+  if (result.success) return NextResponse.json({ ok: true }, { status: 201 });
+  if (result.reason === "not_configured") {
+    return errorResponse("The contact form is not configured yet.", 503);
   }
+  if (result.reason === "rate_limited") {
+    return errorResponse("Too many messages. Please try again in 15 minutes.", 429);
+  }
+  return errorResponse("Unable to save your message right now.", 500);
 }
